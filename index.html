@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML to PDF</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, 'sans-serif';
+        }
+        .btn-wrapper {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            color: white;
+            font-size: 20px;
+            border: 0;
+            background-color: #75c2fa;
+            cursor: pointer;
+            transition: 200ms;
+        }
+        .btn:hover {
+            background-color: #52bdff;
+        }
+        .btn:active,
+        .btn:focus {
+            outline: none;
+            background-color: #40a2ff;
+        }
+        .pdf {
+            width: 500px;
+            margin: 0 auto;
+            padding: 50px 10px;
+            text-align: center;
+            border: 2px solid lightskyblue;
+        }
+        .pdf__header {
+            margin: 0 0 50px;
+            padding: 0;
+            color: deepskyblue;
+            font: 600 30px Arial, 'sans-serif';
+            text-transform: uppercase;
+        }
+        .pdf__table {
+            margin: 0 auto;
+            text-align: left;
+        }
+        .pdf__cell {
+            padding: 5px;
+        }
+        .pdf__cell_title {
+            padding-right: 100px;
+            font-weight: bold;
+        }
+        .form {
+            width: 300px;
+            margin: 30px auto;
+        }
+        .form__line {
+            margin-bottom: 10px;
+        }
+        .form__line:last-child {
+            margin-bottom: 0;
+        }
+        .form__label {
+            display: inline-block;
+            width: 100px;
+        }
+        .form__input {
+            height: 30px;
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 1px solid lightskyblue;
+        }
+        .form__input:focus {
+            outline: none;
+            box-shadow: 0 0 2px 1px lightskyblue;
+        }
+    </style>
+</head>
+<body>
+<form class="form">
+    <div class="form__line">
+        <label for="input-company" class="form__label">Company</label>
+        <input type="text" placeholder="Company" name="company" id="input-company" class="form__input">
+    </div>
+    <div class="form__line">
+        <label for="input-license" class="form__label">License</label>
+        <input type="text" placeholder="License" name="license" id="input-license" class="form__input">
+    </div>
+</form>
+
+<div class="btn-wrapper">
+    <button id="download-pdf-btn" class="btn">Download PDF</button>
+</div>
+
+<div id="pdf-template" class="pdf">
+    <h1 class="pdf__header">Certificate</h1>
+    <table class="pdf__table">
+        <tbody>
+            <tr>
+                <td class="pdf__cell pdf__cell_title">Company</td>
+                <td class="pdf__cell pdf__cell_value" id="company">asd</td>
+            </tr>
+            <tr>
+                <td class="pdf__cell pdf__cell_title">License</td>
+                <td class="pdf__cell pdf__cell_value" id="license">asdss</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script src="html2pdf.bundle.min.js"></script>
+<script>
+    const downloadBtn = document.getElementById('download-pdf-btn');
+    const pdfTemplate = document.getElementById('pdf-template');
+    const inputCompany = document.getElementById('input-company');
+    const inputLicense = document.getElementById('input-license');
+    const htmlElements = {
+    	company: document.getElementById('company'),
+        license: document.getElementById('license'),
+    };
+
+    [inputCompany, inputLicense].forEach(input => {
+    	input.addEventListener('keyup', (ev) => {
+    		htmlElements[ev.target.name].innerText = ev.target.value;
+        });
+    });
+
+    downloadBtn.addEventListener('click', () => {
+    	html2pdf().from(pdfTemplate).save();
+    });
+</script>
+</body>
+</html>
